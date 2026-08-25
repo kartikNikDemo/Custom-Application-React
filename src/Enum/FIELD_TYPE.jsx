@@ -1,0 +1,23 @@
+const FIELD_TYPE = Object.freeze({
+    TEXT: "TEXT",
+    NUMBER: "NUMBER",
+    EMAIL: "EMAIL",
+    PHONE: "PHONE",
+    DATE: "DATE",
+    DATETIME: "DATETIME",
+    TIME: "TIME",
+    DROPDOWN: "DROPDOWN",
+    MULTISELECT: "MULTISELECT",
+    CHECKBOX: "CHECKBOX",
+    RADIO: "RADIO",
+    TEXTAREA: "TEXTAREA",
+    FILE: "FILE",
+    IMAGE: "IMAGE",
+    // CURRENCY: "CURRENCY",
+    //  LOOKUP: "LOOKUP",
+    URL: "URL",
+    PASSWORD: "PASSWORD",
+    BOOLEAN: "BOOLEAN"
+});
+
+export default FIELD_TYPE;
