@@ -3,11 +3,17 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import axiosInstance from '../BaseComponent/axiosInstance';
 
 function CustomNavbar() {
-  const [navbarList, setNavbarList] = useState([]);
+  const [navbarList, setNavbarList] = useState(() => {
+    const cached = localStorage.getItem("cachedNavbarList");
+    return cached ? JSON.parse(cached) : [];
+  });
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const [canSeeModuleSetup, setcanSeeModuleSetup] = useState(false)
+  const [canSeeModuleSetup, setcanSeeModuleSetup] = useState(() => {
+      const role = localStorage.getItem("role");
+      return role === "ROLE_ADMIN";
+  });
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
@@ -76,7 +82,6 @@ function CustomNavbar() {
       const moduleAccess = JSON.parse(localStorage.getItem("moduleAccess")) || [];
       const role = localStorage.getItem("role");
       const response = await axiosInstance.get("/module/getAllModule");
-      console.log("Navbar modules:", response.data);
       let sortedModules = response.data || [];
 
       if (role === "ROLE_EMPLOYEE") {
@@ -99,6 +104,7 @@ function CustomNavbar() {
           (Number(b.displayOrder) || 0)
       );
       setNavbarList(sortedModules);
+      localStorage.setItem("cachedNavbarList", JSON.stringify(sortedModules));
     } catch (error) {
       console.error("Error fetching navbar modules:", error);
     }
