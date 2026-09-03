@@ -5,6 +5,7 @@ import FieldSetup from "./Field/FieldSetup";
 import CreateModule from "./Module/CreateModule";
 import EditModule from "./Module/EditModule";
 import AdvanceFieldSetup from "./Field/AdvanceFieldSetup";
+import TempalteList from "../../Templates/TempalteList";
 
 const formatIconClass = (icon) => {
     if (!icon) return "fa-solid fa-cubes";
@@ -23,6 +24,7 @@ const ModuleSetup = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [activeTab, setActiveTab] = useState("Fields");
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [topTab, setTopTab] = useState("Module");
 
     const handleSelectModule = (module) => {
         setSelectedModule(module);
@@ -49,9 +51,37 @@ const ModuleSetup = () => {
         <div className="min-h-screen flex flex-col bg-gray-50">
             <CustomNavbar />
 
+            {/* Top Bar Tabs */}
+            <div className="bg-white border-b border-gray-200 px-6 pt-2 flex gap-2">
+                <button
+                    onClick={() => setTopTab("Module")}
+                    className={`px-4 py-3 font-medium text-sm transition-colors border-0 border-b-2 outline-none cursor-pointer ${
+                        topTab === "Module"
+                            ? "border-blue-600 text-blue-600 bg-white"
+                            : "border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 bg-transparent"
+                    }`}
+                >
+                    <i className="fa-solid fa-cubes mr-2"></i>
+                    Module
+                </button>
+                <button
+                    onClick={() => setTopTab("Template")}
+                    className={`px-4 py-3 font-medium text-sm transition-colors border-0 border-b-2 outline-none cursor-pointer ${
+                        topTab === "Template"
+                            ? "border-blue-600 text-blue-600 bg-white"
+                            : "border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300 bg-transparent"
+                    }`}
+                >
+                    <i className="fa-solid fa-layer-group mr-2"></i>
+                    Template
+                </button>
+            </div>
+
             <div className="flex grow">
-                {/* Left Side (Sidebar Column) */}
-                <div
+                {topTab === "Module" ? (
+                    <>
+                        {/* Left Side (Sidebar Column) */}
+                        <div
                     className="bg-white border-r shrink-0 flex flex-col"
                     style={{
                         width: isCollapsed ? "80px" : "300px",
@@ -168,6 +198,12 @@ const ModuleSetup = () => {
                         </div>
                     )}
                 </div>
+                    </>
+                ) : (
+                    <div className="flex grow bg-white w-full h-full" style={{ animation: "fadeIn 0.3s ease" }}>
+                        <TempalteList onTemplateImplemented={() => setRefreshTrigger((prev) => prev + 1)} />
+                    </div>
+                )}
             </div>
         </div>
     );
